@@ -1,18 +1,11 @@
--- debug.lua
---
--- Shows how to use the DAP plugin to debug your code.
---
--- Primarily focused on configuring the debugger for Go, but can
--- be extended to other languages as well. That's why it's called
--- kickstart.nvim and not kitchen-sink.nvim ;)
-
 return {
-  -- NOTE: Yes, you can install new plugins here!
   'mfussenegger/nvim-dap',
-  -- NOTE: And you can specify dependencies as well
   dependencies = {
     -- Creates a beautiful debugger UI
     'rcarriga/nvim-dap-ui',
+
+    -- Inline debug hints
+    { 'theHamsta/nvim-dap-virtual-text', opts = {} },
 
     -- Required dependency for nvim-dap-ui
     'nvim-neotest/nvim-nio',
@@ -25,56 +18,105 @@ return {
     'leoluz/nvim-dap-go',
   },
   keys = {
-    -- Basic debugging keymaps, feel free to change to your liking!
     {
-      '<F5>',
+      '<leader>dk',
       function()
         require('dap').continue()
       end,
-      desc = 'Debug: Start/Continue',
+      desc = 'Continue',
     },
     {
-      '<F1>',
+      '<leader>dq',
       function()
-        require('dap').step_into()
+        require('dap').close()
+        require('nvim-dap-virtual-text').disable()
+        require('dapui').close()
       end,
-      desc = 'Debug: Step Into',
+      desc = 'Close',
     },
     {
-      '<F2>',
+      '<leader>dl',
       function()
-        require('dap').step_over()
+        require('dap').run_last()
       end,
-      desc = 'Debug: Step Over',
-    },
-    {
-      '<F3>',
-      function()
-        require('dap').step_out()
-      end,
-      desc = 'Debug: Step Out',
+      desc = 'Run last',
     },
     {
       '<leader>b',
       function()
         require('dap').toggle_breakpoint()
       end,
-      desc = 'Debug: Toggle Breakpoint',
+      desc = 'Toggle breakpoint',
     },
     {
-      '<leader>B',
+      '<leader>dr',
+      function()
+        require('dap').repl.open()
+      end,
+      desc = 'Open REPL',
+    },
+    {
+      '<leader>db',
       function()
         require('dap').set_breakpoint(vim.fn.input 'Breakpoint condition: ')
       end,
-      desc = 'Debug: Set Breakpoint',
+      desc = 'Set conditional breakpoint',
     },
-    -- Toggle to see last session result. Without this, you can't see session output in case of unhandled exception.
     {
-      '<F7>',
+      '<leader>dc',
       function()
-        require('dapui').toggle()
+        require('dap').run_to_cursor()
       end,
-      desc = 'Debug: See last session result.',
+      desc = 'Continue to cursor',
+    },
+    {
+      '<leader>di',
+      function()
+        require('dap').step_into()
+      end,
+      desc = 'Step into',
+    },
+    {
+      '<leader>do',
+      function()
+        require('dap').step_out()
+      end,
+      desc = 'Step out',
+    },
+    {
+      '<leader><leader>',
+      function()
+        require('dap').step_over()
+      end,
+      desc = 'Step over',
+    },
+    {
+      '<leader>dp',
+      function()
+        require('dap').pause()
+      end,
+      desc = 'Pause execution',
+    },
+    {
+      '<leader>de',
+      function()
+        require('dap').goto_()
+      end,
+      desc = 'Edit source',
+    },
+    {
+      '<leader>dw',
+      function()
+        require('dap').ui.widgets.hover()
+      end,
+      desc = 'Show variables',
+    },
+    {
+      '<leader>K',
+      function()
+        require('dapui').eval(nil, { enter = true })
+      end,
+      desc = 'evaluate variable under cursor',
     },
   },
   config = function()
@@ -97,6 +139,48 @@ return {
         'delve',
       },
     }
+
+    dap.configurations.cpp = {
+      {
+        name = 'Launch',
+        type = 'cppdbg',
+        request = 'launch',
+        program = function()
+          -- use the cached file location
+          if vim.g.cpp_executable_file_path and vim.loop.fs_stat(vim.g.cpp_executable_file_path) then
+            return vim.g.cpp_executable_file_path
+          end
+
+          -- get the user input location for the exe
+          local path = vim.fn.input {
+            prompt = 'Path to executable: ',
+            default = vim.fn.getcwd() .. '/',
+            completion = 'file',
+          }
+
+          -- save the new location
+          if path ~= '' then
+            vim.g.cpp_executable_file_path = path
+            return path
+          end
+          return nil
+        end,
+        cwd = '${workspaceFolder}',
+        stopOnEntry = false,
+        args = {},
+      },
+    }
+
+    dap.configurations.c = dap.configurations.cpp
+
+    dap.run_last = function()
+      -- Override run_last implementation
+      if dap.last_run then
+        dap.run(dap.last_run.config, dap.last_run.opts)
+      else
+        dap.continue()
+      end
+    end
 
     -- Dap UI setup
     -- For more information, see |:help nvim-dap-ui|
@@ -121,16 +205,16 @@ return {
     }
 
     -- Change breakpoint icons
-    -- vim.api.nvim_set_hl(0, 'DapBreak', { fg = '#e51400' })
-    -- vim.api.nvim_set_hl(0, 'DapStop', { fg = '#ffcc00' })
-    -- local breakpoint_icons = vim.g.have_nerd_font
-    --     and { Breakpoint = '', BreakpointCondition = '', BreakpointRejected = '', LogPoint = '', Stopped = '' }
-    --   or { Breakpoint = '●', BreakpointCondition = '⊜', BreakpointRejected = '⊘', LogPoint = '◆', Stopped = '⭔' }
-    -- for type, icon in pairs(breakpoint_icons) do
-    --   local tp = 'Dap' .. type
-    --   local hl = (type == 'Stopped') and 'DapStop' or 'DapBreak'
-    --   vim.fn.sign_define(tp, { text = icon, texthl = hl, numhl = hl })
-    -- end
+    vim.api.nvim_set_hl(0, 'DapBreak', { fg = '#e51400' })
+    vim.api.nvim_set_hl(0, 'DapStop', { fg = '#ffcc00' })
+    local breakpoint_icons = vim.g.have_nerd_font
+        and { Breakpoint = '', BreakpointCondition = '', BreakpointRejected = '', LogPoint = '', Stopped = '' }
+      or { Breakpoint = '●', BreakpointCondition = '⊜', BreakpointRejected = '⊘', LogPoint = '◆', Stopped = '⭔' }
+    for type, icon in pairs(breakpoint_icons) do
+      local tp = 'Dap' .. type
+      local hl = (type == 'Stopped') and 'DapStop' or 'DapBreak'
+      vim.fn.sign_define(tp, { text = icon, texthl = hl, numhl = hl })
+    end
 
     dap.listeners.after.event_initialized['dapui_config'] = dapui.open
     dap.listeners.before.event_terminated['dapui_config'] = dapui.close

@@ -44,7 +44,7 @@ vim.opt.smartindent = true
 -- History
 vim.opt.swapfile = false
 vim.opt.backup = false
-vim.opt.undodir = os.getenv("HOME") .. "/.comfig/.vim/undodir"
+vim.opt.undodir = os.getenv("HOME") .. "/.config/.vim/undodir"
 vim.opt.undofile = true
 vim.opt.isfname:append("@-@")
 

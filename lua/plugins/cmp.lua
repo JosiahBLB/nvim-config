@@ -31,11 +31,15 @@ return {
       --  into multiple repos for maintenance purposes.
       'hrsh7th/cmp-nvim-lsp',
       'hrsh7th/cmp-path',
+
+      -- Useful status updates for LSP.
+      { 'onsails/lspkind.nvim', opts = {} },
     },
     config = function()
       -- See `:help cmp`
       local cmp = require 'cmp'
       local luasnip = require 'luasnip'
+      local lspkind = require 'lspkind'
       luasnip.config.setup {}
 
       cmp.setup {
@@ -70,6 +74,7 @@ return {
             end
           end, { 'i', 's' }),
         },
+
         sources = {
           {
             name = 'lazydev',
@@ -79,6 +84,15 @@ return {
           { name = 'nvim_lsp' },
           { name = 'luasnip' },
           { name = 'path' },
+        },
+
+        -- Add lspkind for icons
+        formatting = {
+          format = lspkind.cmp_format {
+            mode = 'symbol_text', -- Show both symbol and text
+            maxwidth = 50, -- Truncate long entries
+            ellipsis_char = '...', -- Show ellipsis for long items
+          },
         },
       }
     end,
