@@ -39,7 +39,5 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   end,
 })
 
---[[ Plugins ]]
-
 --[[ NvimTree ]]
 vim.keymap.set("n", "<leader>t", "<cmd>Neotree toggle<CR>", { desc = "Open file browser" })
