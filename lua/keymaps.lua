@@ -1,41 +1,35 @@
 -- [[ Basic Keymaps ]]
 --  See `:help vim.keymap.set()`
 
--- Clear highlights on search when pressing <Esc> in normal mode
---  See `:help hlsearch`
-vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
-
+-- Keymaps for better default experience
+vim.keymap.set({ "n", "v" }, "<Space>", "<Nop>", { silent = true })
+vim.keymap.set("n", "<C-d>", "<C-d>zz", { desc = "Screen centred half page jump down" })
+vim.keymap.set("n", "<C-u>", "<C-u>zz", { desc = "Screen centred half page jump up" })
+vim.keymap.set("n", "n", "nzzzv", { desc = "Screen centred jump to previous search term" })
+vim.keymap.set("n", "N", "Nzzzv", { desc = "Screen centred jump to next search term" })
+vim.keymap.set("t", "<Esc><Esc>", "<C-\\><C-n>", { desc = "Exit terminal mode" })
+vim.keymap.set({ "n", "v", "i" }, "<C-s>", "<cmd>w<CR>", { desc = "Save file" })
 -- Diagnostic keymaps
-vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
-
--- Exit terminal mode in the builtin terminal with a shortcut that is a bit easier
--- for people to discover. Otherwise, you normally need to press <C-\><C-n>, which
--- is not what someone will guess without a bit more experience.
---
--- NOTE: This won't work in all terminal emulators/tmux/etc. Try your own mapping
--- or just use <C-\><C-n> to exit terminal mode
-vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
-
--- TIP: Disable arrow keys in normal mode
--- vim.keymap.set('n', '<left>', '<cmd>echo "Use h to move!!"<CR>')
--- vim.keymap.set('n', '<right>', '<cmd>echo "Use l to move!!"<CR>')
--- vim.keymap.set('n', '<up>', '<cmd>echo "Use k to move!!"<CR>')
--- vim.keymap.set('n', '<down>', '<cmd>echo "Use j to move!!"<CR>')
-
--- Keybinds to make split navigation easier.
---  Use CTRL+<hjkl> to switch between windows
---
---  See `:help wincmd` for a list of all window commands
-vim.keymap.set('n', '<C-h>', '<C-w><C-h>', { desc = 'Move focus to the left window' })
-vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right window' })
-vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
-vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
+vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, { desc = "Go to previous [D]iagnostic message" })
+vim.keymap.set("n", "]d", vim.diagnostic.goto_next, { desc = "Go to next [D]iagnostic message" })
+vim.keymap.set("n", "<leader>e", vim.diagnostic.open_float, { desc = "Show diagnostic [E]rror messages" })
+vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist, { desc = "Open diagnostic [Q]uickfix list" })
+-- visual mode selection movement
+vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv", { desc = "Move selection down" })
+vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv", { desc = "Move selection up" })
+-- pasting
+vim.keymap.set("x", "<leader>p", [["_d"0P]], { desc = "Paste and replace selection from clipboard" })
+vim.keymap.set("n", "<leader>p", [["0p]], { desc = "Paste from system clipboard" })
+vim.keymap.set("n", "<leader>P", [["0P]], { desc = "Paste from system clipboard" })
+-- copying
+vim.keymap.set({ "n", "v" }, "<M-c>", [["0y]], { desc = "Yank to system clipboard" })
+vim.keymap.set("n", "<leader>Y", [["0Y]], { desc = "Yank to system clipboard" })
+vim.keymap.set({ "n", "v" }, "<leader>y", [["0y]], { desc = "Yank to system clipboard" })
 
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
-
--- Highlight when yanking (copying) text
---  Try it with `yap` in normal mode
+--
+-- Highlight when yanking
 --  See `:help vim.highlight.on_yank()`
 vim.api.nvim_create_autocmd('TextYankPost', {
   desc = 'Highlight when yanking (copying) text',
@@ -45,4 +39,110 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   end,
 })
 
--- vim: ts=2 sts=2 sw=2 et
+--[[ Plugins ]]
+
+--[[ NvimTree ]]
+vim.keymap.set("n", "<leader>t", "<cmd>Neotree toggle<CR>", { desc = "Open file browser" })
+
+--[[ Telescope ]]
+-- Fuzzy finding (See `:help telescope.builtin`)
+local builtin = require("telescope.builtin")
+vim.keymap.set("n", "<leader>sh", builtin.help_tags, { desc = "[S]earch [H]elp" })
+vim.keymap.set("n", "<leader>sk", builtin.keymaps, { desc = "[S]earch [K]eymaps" })
+vim.keymap.set("n", "<leader>sf", builtin.find_files, { desc = "[S]earch [F]iles" })
+vim.keymap.set("n", "<leader>ss", builtin.builtin, { desc = "[S]earch [S]elect Telescope" })
+vim.keymap.set("n", "<leader>sw", builtin.grep_string, { desc = "[S]earch current [W]ord" })
+vim.keymap.set("n", "<leader>sg", builtin.live_grep, { desc = "[S]earch by [G]rep" })
+vim.keymap.set("n", "<leader>sd", builtin.diagnostics, { desc = "[S]earch [D]iagnostics" })
+vim.keymap.set("n", "<leader>sr", builtin.resume, { desc = "[S]earch [R]esume" })
+vim.keymap.set("n", "<leader>s.", builtin.oldfiles, { desc = '[S]earch Recent Files ("." for repeat)' })
+vim.keymap.set("n", "<leader><leader>", builtin.buffers, { desc = "[ ] Find existing buffers" })
+
+-- Slightly advanced example of overriding default behavior and theme
+vim.keymap.set("n", "<leader>/", function()
+	-- You can pass additional configuration to Telescope to change the theme, layout, etc.
+	builtin.current_buffer_fuzzy_find(require("telescope.themes").get_dropdown({
+		winblend = 10,
+		previewer = false,
+	}))
+end, { desc = "[/] Fuzzily search in current buffer" })
+
+-- It's also possible to pass additional configuration options.
+--  See `:help telescope.builtin.live_grep()` for information about particular keys
+vim.keymap.set("n", "<leader>s/", function()
+	builtin.live_grep({
+		grep_open_files = true,
+		prompt_title = "Live Grep in Open Files",
+	})
+end, { desc = "[S]earch [/] in Open Files" })
+
+-- Shortcut for searching your Neovim configuration files
+vim.keymap.set("n", "<leader>sn", function()
+	builtin.find_files({ cwd = vim.fn.stdpath("config") })
+end, { desc = "[S]earch [N]eovim files" })
+
+--[[ Conform ]]
+vim.keymap.set("n", "<leader>f", function()
+	require("conform").format({ async = true, lsp_format = "fallback" })
+end, { desc = "[F]ormat document" })
+
+--[[ Nvim-dap]]
+local dap = require("dap")
+
+vim.keymap.set("n", "<leader>dk", function()
+	dap.continue()
+end, { desc = "Continue" })
+
+vim.keymap.set("n", "<leader>dq", function()
+	dap.close()
+	require("nvim-dap-virtual-text").disable()
+	require("dapui").close()
+end, { desc = "Close" })
+
+vim.keymap.set("n", "<leader>dl", function()
+	dap.run_last()
+end, { desc = "Run last" })
+
+vim.keymap.set("n", "<leader>b", function()
+	dap.toggle_breakpoint()
+end, { desc = "Toggle breakpoint" })
+
+vim.keymap.set("n", "<leader>dr", function()
+	dap.repl.open()
+end, { desc = "Open REPL" })
+
+vim.keymap.set("n", "<leader>db", function()
+	dap.set_breakpoint(vim.fn.input("Breakpoint condition: "))
+end, { desc = "Set conditional breakpoint" })
+
+vim.keymap.set("n", "<leader>dc", function()
+	dap.run_to_cursor()
+end, { desc = "Continue to cursor" })
+
+vim.keymap.set("n", "<leader>di", function()
+	dap.step_into()
+end, { desc = "Step into" })
+
+vim.keymap.set("n", "<leader>do", function()
+	dap.step_out()
+end, { desc = "Step out" })
+
+vim.keymap.set("n", "<leader>dd", function()
+	dap.step_over()
+end, { desc = "Step over" })
+
+vim.keymap.set("n", "<leader>dp", function()
+	dap.pause()
+end, { desc = "Pause execution" })
+
+vim.keymap.set("n", "<leader>de", function()
+	dap.goto_()
+end, { desc = "Edit source" })
+
+vim.keymap.set("n", "<leader>dw", function()
+	dap.ui.widgets.hover()
+end, { desc = "Show variables" })
+
+vim.keymap.set("n", "<space>K", function()
+	require("dapui").eval(nil, { enter = true })
+end, { desc = "evaluate variable under cursor" })
