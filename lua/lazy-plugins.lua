@@ -12,8 +12,9 @@ require('lazy').setup({
   'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
   'mg979/vim-visual-multi', -- ctrl+n for multi-cursors
   'xiyaowong/transparent.nvim', -- transparent background
+  { 'numToStr/Comment.nvim', opts = {} }, -- default nvim uses /* */ rather than //
   require 'plugins/lint', -- static analysis
-  require 'plugins/gitsigns', -- Git signs to gutter
+  require 'plugins/git', -- Git functionality
   require 'plugins/which-key', -- Display key mappings
   require 'plugins/telescope', -- Fuzzy finding
   require 'plugins/lspconfig', -- Language server protocl config
