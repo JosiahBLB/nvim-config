@@ -53,6 +53,7 @@ return {
           map('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction', { 'n', 'x' })
           --  For example, in C this would take you to the header.
           map('gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
+          map('gh', ':ClangdSwitchSourceHeader<CR>', '[G]oto [H]eader (or source)')
 
           -- highlight references of the word under your cursor
           local client = vim.lsp.get_client_by_id(event.data.client_id)
