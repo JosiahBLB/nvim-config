@@ -17,14 +17,20 @@ vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagn
 -- visual mode selection movement
 vim.keymap.set('v', 'J', ":m '>+1<CR>gv=gv", { desc = 'Move selection down' })
 vim.keymap.set('v', 'K', ":m '<-2<CR>gv=gv", { desc = 'Move selection up' })
--- pasting
-vim.keymap.set('x', '<leader>p', [["_d"0P]], { desc = 'Paste and replace selection from clipboard' })
-vim.keymap.set('n', '<leader>p', [["0p]], { desc = 'Paste from system clipboard' })
-vim.keymap.set('n', '<leader>P', [["0P]], { desc = 'Paste from system clipboard' })
--- copying
+-- pasting: set leader pasting to go to zero register
+vim.keymap.set('x', '<leader>p', [["_d"0P]], { desc = 'Paste and replace selection from zero register' })
+vim.keymap.set('n', '<leader>p', [["0p]], { desc = 'Paste from zero register' })
+vim.keymap.set('n', '<leader>P', [["0P]], { desc = 'Paste from zero register' })
+vim.keymap.set('v', 'p', [["_dP]], { desc = 'Paste from system clipboard without copying' })
+-- copying: set leader copying to get to the zero register
 vim.keymap.set({ 'n', 'v' }, '<M-c>', [["0y]], { desc = 'Yank to system clipboard' })
 vim.keymap.set('n', '<leader>Y', [["0Y]], { desc = 'Yank to system clipboard' })
 vim.keymap.set({ 'n', 'v' }, '<leader>y', [["0y]], { desc = 'Yank to system clipboard' })
+-- deleting: I dont the + buffer being overriden by default, but its nice to have the option
+vim.keymap.set({ 'n', 'v' }, '<leader>d', [["+d]], { desc = 'Delete to system clipboard' })
+vim.keymap.set({ 'n', 'v' }, '<leader>D', [["+D]], { desc = 'Delete to system clipboard' })
+vim.keymap.set({ 'n', 'v' }, 'd', [["0d]], { desc = 'Delete to zero register' })
+vim.keymap.set({ 'n', 'v' }, 'd', [["0D]], { desc = 'Delete to zero register' })
 
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
@@ -39,5 +45,14 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   end,
 })
 
---[[ NvimTree ]]
-vim.keymap.set('n', '<leader>fb', '<cmd>Neotree toggle<CR>', { desc = 'Open [F]ile [B]rowser' })
+-- Toggle inline diagnostics
+vim.g.inline_diagnostics_enabled = true
+function ToggleInlineDiagnostics()
+    vim.g.inline_diagnostics_enabled = not vim.g.inline_diagnostics_enabled
+    vim.diagnostic.config({
+        virtual_text = vim.g.inline_diagnostics_enabled,  -- Toggle inline warnings/errors
+        signs = true,  -- Keep gutter signs visible
+        underline = vim.g.inline_diagnostics_enabled,  -- Toggle underlining
+    })
+end
+vim.keymap.set("n", "<leader>tw", ToggleInlineDiagnostics, { noremap = true, silent = true })

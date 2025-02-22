@@ -105,14 +105,16 @@ return {
       -- Enable the following language servers
       local servers = {
         -- `:help lspconfig-all` for a list of all the pre-configured LSPs
-        clangd = {},
-        pyright = {},
-        nil_ls = {},
         bashls = {},
-        zls = {},
+        clangd = {},
         cmake = {
           filetypes = { 'cmake', 'CMakeLists.txt' },
         },
+        nil_ls = {},
+        rnix = {},
+        pyright = {},
+        ruff = {},
+        zls = {},
 
         lua_ls = {
           -- cmd = { ... },
@@ -139,21 +141,39 @@ return {
       --    :Mason
       local ensure_installed = vim.tbl_keys(servers or {})
       vim.list_extend(ensure_installed, {
+        -- [[ LSP ]]
+        'nil', -- nix
+        'rnix', -- nix
+        'ruff', -- python
+        'bash-language-server',
+        'clangd', -- c/c++
+        'cmake-language-server',
+        'lua-language-server',
+        'zls', -- zig
+        'pyright',
+        'vulture',
+
         --[[ Format ]]
-        'stylua',
+        'ruff', -- python
+        'clang-format', -- c/c++
+        'cmakelang',
+        'markdownlint',
+        'stylua', -- lua
+        'nixpkgs-fmt',
 
         --[[ DAPs ]]
-        'cpptools',
+        'codelldb',
         'debugpy',
 
         --[[ Lint ]]
-        'markdownlint',
-        'hadolint',
-        'jsonlint',
-        'cpplint',
-        'cpplint',
+        'ruff', -- python
+        'mypy', -- python
+        'cmakelang',
         'cmakelint',
-        'ruff',
+        'cpplint',
+        'hadolint', -- docker
+        'jsonlint',
+        'markdownlint',
       })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 

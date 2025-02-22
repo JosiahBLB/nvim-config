@@ -12,7 +12,7 @@ return {
         cpp = { 'cpplint' },
         c = { 'cpplint' },
         cmake = { 'cmakelint' },
-        python = { 'ruff' },
+        python = { 'ruff', 'mypy', 'vulture' },
       }
 
       -- Create autocommand which carries out the actual linting

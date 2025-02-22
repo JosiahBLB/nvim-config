@@ -7,10 +7,10 @@ vim.opt.mouse = "a" -- enable mouse mode
 vim.opt.breakindent = true
 vim.wo.signcolumn = "yes"
 vim.opt.updatetime = 250
-vim.opt.timeoutlen = 300 -- mapped sequence wait time
+vim.opt.timeoutlen = 300                 -- mapped sequence wait time
 vim.opt.completeopt = "menuone,noselect" -- better completion experience
 vim.opt.termguicolors = true
-vim.opt.splitright = true -- vim-splits behaviour
+vim.opt.splitright = true                -- vim-splits behaviour
 vim.opt.splitbelow = true
 
 -- Editor
@@ -20,10 +20,10 @@ vim.opt.wrap = false
 vim.opt.showmode = true
 vim.opt.incsearch = true
 vim.opt.scrolloff = 8
-vim.opt.hlsearch = false -- highlight search
-vim.opt.ignorecase = true -- for searching
-vim.opt.smartcase = true -- case sensitive when capitals used
-vim.opt.cursorline = true -- highlight current line
+vim.opt.hlsearch = false     -- highlight search
+vim.opt.ignorecase = true    -- for searching
+vim.opt.smartcase = true     -- case sensitive when capitals used
+vim.opt.cursorline = true    -- highlight current line
 vim.opt.inccommand = "split" -- live substitutions
 
 -- Sync clipboard between OS and Neovim.

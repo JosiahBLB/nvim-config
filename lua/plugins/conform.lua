@@ -17,6 +17,12 @@ return {
       notify_on_error = false,
       formatters_by_ft = {
         lua = { 'stylua' },
+        cpp = { 'clang-format' },
+        c = { 'clang-format' },
+        cmake = { 'cmake_format' },
+        nix = { 'nixpkgs_fmt'},
+        python = { 'ruff_fix', 'ruff_format', 'ruff_organize_imports'},
+        markdown = { 'markdownfmt' }
         -- Conform can also run multiple formatters sequentially
         -- python = { "isort", "black" },
         --

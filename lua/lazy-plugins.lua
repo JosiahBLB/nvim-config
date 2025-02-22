@@ -11,11 +11,11 @@
 require('lazy').setup({
   'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
   'mg979/vim-visual-multi', -- ctrl+n for multi-cursors
-  'xiyaowong/transparent.nvim', -- transparent background
   { 'numToStr/Comment.nvim', opts = {} }, -- default nvim uses /* */ rather than //
+  require 'plugins/nvim-colorizer', -- color hex values
   require 'plugins/lint', -- static analysis
+  require 'plugins/transparent', -- adds window transparency
   require 'plugins/git', -- Git functionality
-  require 'plugins/which-key', -- Display key mappings
   require 'plugins/telescope', -- Fuzzy finding
   require 'plugins/lspconfig', -- Language server protocl config
   require 'plugins/conform', -- Auto formatting
@@ -29,6 +29,7 @@ require('lazy').setup({
   require 'plugins/indent-line', -- indentation guides
   require 'plugins/autopairs', -- match brackets
   require 'plugins/debug', -- debugging!
+  require 'plugins/which-key', -- Display key mappings
 
   -- For additional information with loading, sourcing and examples see `:help lazy.nvim-🔌-plugin-spec`
   -- Or use `<space>sh` then write `lazy.nvim-plugin`

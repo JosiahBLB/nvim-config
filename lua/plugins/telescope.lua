@@ -81,10 +81,29 @@ return {
         }
       end, { desc = '[S]earch [/] in Open Files' })
 
+      -- Neoclip keymaps
+      vim.keymap.set('n', '<leader>sc', ':Telescope neoclip<CR>',
+        { desc = '[S]earch [C]lipboard', silent = true })
+
       -- Shortcut for searching your Neovim configuration files
       vim.keymap.set('n', '<leader>sn', function()
         builtin.find_files { cwd = vim.fn.stdpath 'config' }
       end, { desc = '[S]earch [N]eovim files' })
+    end,
+  },
+
+  -- Save clipboard history
+  {
+    "AckslD/nvim-neoclip.lua",
+    requires = {
+      { 'nvim-telescope/telescope.nvim' },
+    },
+    config = function()
+      require('neoclip').setup({
+        on_paste = {
+          close_telescope = false
+        },
+      })
     end,
   },
 }
