@@ -9,6 +9,8 @@ vim.keymap.set('n', 'n', 'nzzzv', { desc = 'Screen centred jump to previous sear
 vim.keymap.set('n', 'N', 'Nzzzv', { desc = 'Screen centred jump to next search term' })
 vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
 vim.keymap.set({ 'n', 'v', 'i' }, '<C-s>', '<cmd>w<CR>', { desc = 'Save file' })
+vim.keymap.set('n', '<leader>R', ':source $XDG_CONFIG_HOME/nvim/init.lua <CR>', { desc = '[R]eload Neovim config' })
+
 -- Diagnostic keymaps
 vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous [D]iagnostic message' })
 vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next [D]iagnostic message' })
@@ -26,11 +28,6 @@ vim.keymap.set('v', 'p', [["_dP]], { desc = 'Paste from system clipboard without
 vim.keymap.set({ 'n', 'v' }, '<M-c>', [["0y]], { desc = 'Yank to system clipboard' })
 vim.keymap.set('n', '<leader>Y', [["0Y]], { desc = 'Yank to system clipboard' })
 vim.keymap.set({ 'n', 'v' }, '<leader>y', [["0y]], { desc = 'Yank to system clipboard' })
--- deleting: I dont the + buffer being overriden by default, but its nice to have the option
-vim.keymap.set({ 'n', 'v' }, '<leader>d', [["+d]], { desc = 'Delete to system clipboard' })
-vim.keymap.set({ 'n', 'v' }, '<leader>D', [["+D]], { desc = 'Delete to system clipboard' })
-vim.keymap.set({ 'n', 'v' }, 'd', [["0d]], { desc = 'Delete to zero register' })
-vim.keymap.set({ 'n', 'v' }, 'd', [["0D]], { desc = 'Delete to zero register' })
 
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`

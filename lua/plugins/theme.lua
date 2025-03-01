@@ -6,13 +6,8 @@ return {
       vim.cmd.colorscheme 'vscode'
       vim.cmd.hi 'Comment gui=none'
     end,
-    config = {
-      vim.api.nvim_create_autocmd('ColorScheme', {
-        pattern = '*',
-        callback = function()
-          vim.cmd [[highlight CursorLine guibg=#282A36]]
-        end,
-      }),
+    opts = {
+      terminal_colors = true,
     },
   },
   -- other themes:
