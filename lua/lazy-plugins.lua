@@ -30,6 +30,7 @@ require('lazy').setup({
   require 'plugins/autopairs', -- match brackets
   require 'plugins/debug', -- debugging!
   require 'plugins/which-key', -- Display key mappings
+  require 'plugins/flash',
 
   -- For additional information with loading, sourcing and examples see `:help lazy.nvim-🔌-plugin-spec`
   -- Or use `<space>sh` then write `lazy.nvim-plugin`
