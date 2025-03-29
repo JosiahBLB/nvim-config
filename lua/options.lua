@@ -25,6 +25,14 @@ vim.opt.ignorecase = true    -- for searching
 vim.opt.smartcase = true     -- case sensitive when capitals used
 vim.opt.cursorline = true    -- highlight current line
 vim.opt.inccommand = "split" -- live substitutions
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = { "markdown" },
+  callback = function()
+    vim.opt_local.wrap = true
+    vim.opt_local.linebreak = true
+    vim.opt_local.list = false
+  end,
+})
 
 -- Sync clipboard between OS and Neovim.
 --  Schedule the setting after `UiEnter` because it can increase startup-time.

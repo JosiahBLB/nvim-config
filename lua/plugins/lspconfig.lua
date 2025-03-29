@@ -110,7 +110,6 @@ return {
         cmake = {
           filetypes = { 'cmake', 'CMakeLists.txt' },
         },
-        nil_ls = {},
         rnix = {},
         pyright = {},
         ruff = {},
@@ -143,8 +142,6 @@ return {
       local ensure_installed = vim.tbl_keys(servers or {})
       vim.list_extend(ensure_installed, {
         -- [[ LSP ]]
-        'nil', -- nix
-        'rnix', -- nix
         'ruff', -- python
         'bash-language-server',
         'clangd', -- c/c++
@@ -154,14 +151,14 @@ return {
         'pyright',
         'lemminx', -- xml
         'gopls',
+        'cmakelang',
+        'markdownlint',
 
         --[[ Format ]]
         'ruff', -- python
         'clang-format', -- c/c++
         'cmakelang',
-        'markdownlint',
         'stylua', -- lua
-        'nixpkgs-fmt',
 
         --[[ DAPs ]]
         'codelldb',
@@ -171,12 +168,10 @@ return {
         'ruff', -- python
         'mypy', -- python
         'vulture', -- python
-        'cmakelang',
         'cmakelint',
         'cpplint',
         'hadolint', -- docker
         'jsonlint',
-        'markdownlint',
       })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
