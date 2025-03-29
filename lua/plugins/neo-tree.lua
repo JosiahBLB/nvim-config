@@ -18,7 +18,7 @@ return {
       filesystem = {
         window = {
           mappings = {
-            ['<leader>fb'] = 'close_window',
+            ['<esc>'] = 'close_window',
           },
         },
       },

@@ -115,7 +115,8 @@ return {
         pyright = {},
         ruff = {},
         zls = {},
-
+        lemminx = {},
+        gopls = {},
         lua_ls = {
           -- cmd = { ... },
           -- filetypes = { ... },
@@ -151,7 +152,8 @@ return {
         'lua-language-server',
         'zls', -- zig
         'pyright',
-        'vulture',
+        'lemminx', -- xml
+        'gopls',
 
         --[[ Format ]]
         'ruff', -- python
@@ -168,6 +170,7 @@ return {
         --[[ Lint ]]
         'ruff', -- python
         'mypy', -- python
+        'vulture', -- python
         'cmakelang',
         'cmakelint',
         'cpplint',

@@ -12,6 +12,7 @@ require('lazy').setup({
   'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
   'mg979/vim-visual-multi', -- ctrl+n for multi-cursors
   { 'numToStr/Comment.nvim', opts = {} }, -- default nvim uses /* */ rather than //
+  require 'plugins/neogen', -- doxgen generation
   require 'plugins/nvim-colorizer', -- color hex values
   require 'plugins/lint', -- static analysis
   require 'plugins/transparent', -- adds window transparency
@@ -24,13 +25,15 @@ require('lazy').setup({
   require 'plugins/todo-comments', -- coloured        TODO:
   require 'plugins/mini', -- grouped smaller plugins
   require 'plugins/treesitter', -- Highlight, edit, and navigate code
-  require 'plugins/tmux-navigator', -- ctrl+<hjkl> to move between tmux panes
+  require 'plugins/tmux', -- ctrl+<hjkl> to move between tmux panes
   require 'plugins/neo-tree', -- file navigator
   require 'plugins/indent-line', -- indentation guides
   require 'plugins/autopairs', -- match brackets
   require 'plugins/debug', -- debugging!
-  require 'plugins/which-key', -- Display key mappings
-  require 'plugins/flash',
+  require 'plugins/which-key', -- display key mappings
+  require 'plugins/obsidian', -- obsidian integration
+  require 'plugins/resession', -- nvim sessionizer
+  require 'plugins/ufo', -- folds
 
   -- For additional information with loading, sourcing and examples see `:help lazy.nvim-🔌-plugin-spec`
   -- Or use `<space>sh` then write `lazy.nvim-plugin`

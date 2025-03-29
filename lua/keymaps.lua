@@ -9,7 +9,10 @@ vim.keymap.set('n', 'n', 'nzzzv', { desc = 'Screen centred jump to previous sear
 vim.keymap.set('n', 'N', 'Nzzzv', { desc = 'Screen centred jump to next search term' })
 vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
 vim.keymap.set({ 'n', 'v', 'i' }, '<C-s>', '<cmd>w<CR>', { desc = 'Save file' })
-vim.keymap.set('n', '<leader>R', ':source $XDG_CONFIG_HOME/nvim/init.lua <CR>', { desc = '[R]eload Neovim config' })
+vim.keymap.set('n', '<leader>R', function()
+  vim.cmd.source '$XDG_CONFIG_HOME/nvim/init.lua'
+end, { desc = '[R]eload Neovim config' })
+vim.keymap.set('n', '<leader>gg', '<cmd>!echo goodbye<cr>', { desc = '[R]eload Neovim config' })
 
 -- Diagnostic keymaps
 vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous [D]iagnostic message' })
@@ -45,11 +48,11 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 -- Toggle inline diagnostics
 vim.g.inline_diagnostics_enabled = true
 function ToggleInlineDiagnostics()
-    vim.g.inline_diagnostics_enabled = not vim.g.inline_diagnostics_enabled
-    vim.diagnostic.config({
-        virtual_text = vim.g.inline_diagnostics_enabled,  -- Toggle inline warnings/errors
-        signs = true,  -- Keep gutter signs visible
-        underline = vim.g.inline_diagnostics_enabled,  -- Toggle underlining
-    })
+  vim.g.inline_diagnostics_enabled = not vim.g.inline_diagnostics_enabled
+  vim.diagnostic.config {
+    virtual_text = vim.g.inline_diagnostics_enabled, -- Toggle inline warnings/errors
+    signs = true, -- Keep gutter signs visible
+    underline = vim.g.inline_diagnostics_enabled, -- Toggle underlining
+  }
 end
-vim.keymap.set("n", "<leader>tw", ToggleInlineDiagnostics, { noremap = true, silent = true })
+vim.keymap.set('n', '<leader>tw', ToggleInlineDiagnostics, { noremap = true, silent = true })

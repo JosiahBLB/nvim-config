@@ -141,11 +141,74 @@ return {
         },
       }
 
+      local mason_packages = vim.fn.stdpath 'data' .. '/mason/packages'
+      local bashdb_dir = mason_packages .. '/bash-debug-adapter/extension/bashdb_dir'
+
+      dap.adapters.bashdb = {
+        type = 'executable',
+        command = 'bash-debug-adapter',
+        name = 'bashdb',
+      }
+
+      dap.configurations.sh = {
+        {
+          type = 'bashdb',
+          request = 'launch',
+          name = 'Launch file',
+          showDebugOutput = true,
+          pathBashdb = bashdb_dir .. '/bashdb',
+          pathBashdbLib = bashdb_dir,
+          trace = true,
+          file = '${file}',
+          program = '${file}',
+          cwd = '${workspaceFolder}',
+          pathCat = 'cat',
+          pathBash = '/bin/bash',
+          pathMkfifo = 'mkfifo',
+          pathPkill = 'pkill',
+          terminalKind = 'integrated',
+          args = {},
+          env = {},
+        },
+      }
+
       dap.configurations.cpp = {
         {
-          name = 'Launch',
+          name = 'Local debug',
           type = 'codelldb',
           request = 'launch',
+          program = function()
+            -- use the cached file location
+            if vim.g.cpp_executable_file_path and vim.loop.fs_stat(vim.g.cpp_executable_file_path) then
+              return vim.g.cpp_executable_file_path
+            end
+
+            -- get the user input location for the exe
+            local path = vim.fn.input {
+              prompt = 'Path to executable: ',
+              default = vim.fn.getcwd() .. '/',
+              completion = 'file',
+            }
+
+            -- save the new location
+            if path ~= '' then
+              vim.g.cpp_executable_file_path = path
+              return path
+            end
+            return nil
+          end,
+          cwd = '${workspaceFolder}',
+          stopOnEntry = false,
+          args = {},
+        },
+        {
+          name = 'Remote debug',
+          type = 'codelldb',
+          request = 'launch',
+          MIMode = 'gdb',
+          miDebuggerServerAddress = '192.168.8.26:1234',
+          miDebuggerPath = 'gdb-multiarch',
+          serverLaunchTimeout = 30000,
           program = function()
             -- use the cached file location
             if vim.g.cpp_executable_file_path and vim.loop.fs_stat(vim.g.cpp_executable_file_path) then

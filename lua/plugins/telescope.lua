@@ -22,6 +22,7 @@ return {
         end,
       },
       { 'nvim-telescope/telescope-ui-select.nvim' },
+      { 'nvim-telescope/telescope-live-grep-args.nvim', version = '^1.0.0' },
 
       -- Useful for getting pretty icons, but requires a Nerd Font.
       { 'nvim-tree/nvim-web-devicons', enabled = vim.g.have_nerd_font },
@@ -37,7 +38,12 @@ return {
         --     i = { ['<c-enter>'] = 'to_fuzzy_refine' },
         --   },
         -- },
-        -- pickers = {}
+        pickers = {
+          find_files = {
+            hidden = true, -- hidden files
+            follow = true, -- follow symlinks
+          }
+        },
         extensions = {
           ['ui-select'] = {
             require('telescope.themes').get_dropdown(),
@@ -48,6 +54,7 @@ return {
       -- Enable Telescope extensions if they are installed
       pcall(require('telescope').load_extension, 'fzf')
       pcall(require('telescope').load_extension, 'ui-select')
+      pcall(require('telescope').load_extension, 'live_grep_args')
 
       -- See `:help telescope.builtin`
       local builtin = require 'telescope.builtin'
@@ -58,7 +65,7 @@ return {
       vim.keymap.set('n', '<leader>ss', builtin.lsp_document_symbols, { desc = '[s]earch document [s]ymbols' })
       vim.keymap.set('n', '<leader>SS', builtin.builtin, { desc = '[s]earch [s]elect Telescope' })
       vim.keymap.set('n', '<leader>sw', builtin.grep_string, { desc = '[s]earch current [w]ord' })
-      vim.keymap.set('n', '<leader>sg', builtin.live_grep, { desc = '[s]earch by [g]rep' })
+      vim.keymap.set('n', '<leader>sg', ':lua require("telescope").extensions.live_grep_args.live_grep_args()<CR>', { desc = '[s]earch by [g]rep' })
       vim.keymap.set('n', '<leader>sd', builtin.diagnostics, { desc = '[s]earch [d]iagnostics' })
       vim.keymap.set('n', '<leader>sr', builtin.resume, { desc = '[s]earch [r]esume' })
       vim.keymap.set('n', '<leader>st', builtin.colorscheme, { desc = '[s]earch [t]hemes' })
@@ -84,8 +91,7 @@ return {
       end, { desc = '[S]earch [/] in Open Files' })
 
       -- Neoclip keymaps
-      vim.keymap.set('n', '<leader>sc', ':Telescope neoclip<CR>',
-        { desc = '[S]earch [C]lipboard', silent = true })
+      vim.keymap.set('n', '<leader>sc', ':Telescope neoclip<CR>', { desc = '[S]earch [C]lipboard', silent = true })
 
       -- Shortcut for searching your Neovim configuration files
       vim.keymap.set('n', '<leader>sn', function()
@@ -96,16 +102,16 @@ return {
 
   -- Save clipboard history
   {
-    "AckslD/nvim-neoclip.lua",
+    'AckslD/nvim-neoclip.lua',
     requires = {
       { 'nvim-telescope/telescope.nvim' },
     },
     config = function()
-      require('neoclip').setup({
+      require('neoclip').setup {
         on_paste = {
-          close_telescope = false
+          close_telescope = false,
         },
-      })
+      }
     end,
   },
 }

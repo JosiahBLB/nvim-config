@@ -20,9 +20,12 @@ return {
         cpp = { 'clang-format' },
         c = { 'clang-format' },
         cmake = { 'cmake_format' },
-        nix = { 'nixpkgs_fmt'},
-        python = { 'ruff_fix', 'ruff_format', 'ruff_organize_imports'},
-        markdown = { 'markdownfmt' }
+        nix = { 'nixpkgs_fmt' },
+        python = { 'ruff_fix', 'ruff_format', 'ruff_organize_imports' },
+        markdown = { 'markdownlint' },
+        bash = { 'shfmt' },
+        sh = { 'shfmt' },
+        go = { 'gofmt' },
         -- Conform can also run multiple formatters sequentially
         -- python = { "isort", "black" },
         --

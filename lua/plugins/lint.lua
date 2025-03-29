@@ -13,6 +13,8 @@ return {
         c = { 'cpplint' },
         cmake = { 'cmakelint' },
         python = { 'ruff', 'mypy', 'vulture' },
+        sh = { 'shellcheck' },
+        bash = { 'shellcheck' },
       }
 
       -- Create autocommand which carries out the actual linting
