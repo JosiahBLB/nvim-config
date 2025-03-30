@@ -107,15 +107,10 @@ return {
         -- `:help lspconfig-all` for a list of all the pre-configured LSPs
         bashls = {},
         clangd = {},
+        ruff = {},
         cmake = {
           filetypes = { 'cmake', 'CMakeLists.txt' },
         },
-        rnix = {},
-        pyright = {},
-        ruff = {},
-        zls = {},
-        lemminx = {},
-        gopls = {},
         lua_ls = {
           -- cmd = { ... },
           -- filetypes = { ... },
@@ -132,6 +127,10 @@ return {
             },
           },
         },
+        zls = {},
+        pyright = {},
+        lemminx = {}, -- docker
+        gopls = {},
       }
 
       -- Ensure the servers and tools above are installed
@@ -140,40 +139,25 @@ return {
       -- other tools, you can run
       --    :Mason
       local ensure_installed = vim.tbl_keys(servers or {})
+      vim.list_extend(ensure_installed, require('plugins.lint').ensure_installed)
+      vim.list_extend(ensure_installed, require('plugins.conform').ensure_installed)
+      vim.list_extend(ensure_installed, require('plugins.debug').ensure_installed)
       vim.list_extend(ensure_installed, {
-        -- [[ LSP ]]
-        'ruff', -- python
-        'bash-language-server',
-        'clangd', -- c/c++
-        'cmake-language-server',
-        'lua-language-server',
-        'zls', -- zig
-        'pyright',
-        'lemminx', -- xml
-        'gopls',
-        'cmakelang',
-        'markdownlint',
-
-        --[[ Format ]]
-        'ruff', -- python
-        'clang-format', -- c/c++
-        'cmakelang',
-        'stylua', -- lua
-        'prettier',
-
-        --[[ DAPs ]]
-        'codelldb',
-        'debugpy',
-
-        --[[ Lint ]]
-        'ruff', -- python
-        'mypy', -- python
-        'vulture', -- python
-        'cmakelint',
-        'cpplint',
-        'hadolint', -- docker
-        'jsonlint',
+        'bash-language-server', -- bashls
+        'cmake-language-server', -- cmake
+        'lua-language-server', -- lua_ls
       })
+
+      -- deduplicate the list
+      local set = {}
+      for _, v in ipairs(ensure_installed) do
+        set[v] = true
+      end
+      ensure_installed = {}
+      for k in pairs(set) do
+        table.insert(ensure_installed, k)
+      end
+
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
       require('mason-lspconfig').setup {

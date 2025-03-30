@@ -14,12 +14,12 @@ require('lazy').setup({
   { 'numToStr/Comment.nvim', opts = {} }, -- default nvim uses /* */ rather than //
   require 'plugins/neogen', -- doxgen generation
   require 'plugins/nvim-colorizer', -- color hex values
-  require 'plugins/lint', -- static analysis
+  require('plugins/lint').init(), -- static analysis
   require 'plugins/transparent', -- adds window transparency
   require 'plugins/git', -- Git functionality
   require 'plugins/telescope', -- Fuzzy finding
   require 'plugins/lspconfig', -- Language server protocl config
-  require 'plugins/conform', -- Auto formatting
+  require('plugins/conform').init(), -- Auto formatting
   require 'plugins/cmp', -- completion sources
   require 'plugins/theme', -- editor colour scheme
   require 'plugins/todo-comments', -- coloured        TODO:
@@ -29,7 +29,7 @@ require('lazy').setup({
   require 'plugins/neo-tree', -- file navigator
   require 'plugins/indent-line', -- indentation guides
   require 'plugins/autopairs', -- match brackets
-  require 'plugins/debug', -- debugging!
+  require('plugins/debug').init(), -- debugging!
   require 'plugins/which-key', -- display key mappings
   require 'plugins/obsidian', -- obsidian integration
   require 'plugins/resession', -- nvim sessionizer
