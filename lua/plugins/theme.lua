@@ -7,7 +7,7 @@ return {
       vim.cmd.hi 'Comment gui=none'
       local c = require('vscode.colors').get_colors()
       vim.api.nvim_set_hl(0, 'Folded', {
-        bg = c.vscCursorDarkDark,
+        bg = c.vscLeftDark,
       })
       vim.api.nvim_set_hl(0, 'CursorLine', {
         bg = c.vscFoldBackground,
