@@ -185,6 +185,9 @@ return {
           end,
         },
       }
+
+      -- Manual entries for those which are not handled by mason
+      require('lspconfig').dartls.setup {}
     end,
   },
 }
