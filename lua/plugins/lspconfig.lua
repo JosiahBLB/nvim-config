@@ -159,6 +159,7 @@ return {
         'clang-format', -- c/c++
         'cmakelang',
         'stylua', -- lua
+        'prettier',
 
         --[[ DAPs ]]
         'codelldb',

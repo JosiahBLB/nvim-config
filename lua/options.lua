@@ -33,6 +33,13 @@ vim.api.nvim_create_autocmd("FileType", {
     vim.opt_local.list = false
   end,
 })
+-- treesitter's syntax highlighting for tmux files sucks
+vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
+  pattern = { ".tmux.conf", "*.tmux", "tmux.conf" },
+  callback = function()
+    vim.treesitter.language.register("bash", "tmux")  -- force tmux filetype to use bash parser
+  end,
+})
 
 -- Sync clipboard between OS and Neovim.
 --  Schedule the setting after `UiEnter` because it can increase startup-time.
