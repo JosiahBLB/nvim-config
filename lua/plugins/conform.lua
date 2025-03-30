@@ -22,7 +22,7 @@ return {
         cmake = { 'cmake_format' },
         nix = { 'nixpkgs_fmt' },
         python = { 'ruff_fix', 'ruff_format', 'ruff_organize_imports' },
-        markdown = { 'markdownlint' },
+        markdown = { 'prettier', 'markdownlint' },
         bash = { 'shfmt' },
         sh = { 'shfmt' },
         go = { 'gofmt' },

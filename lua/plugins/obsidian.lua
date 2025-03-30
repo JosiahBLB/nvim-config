@@ -23,6 +23,7 @@ return {
       vim.keymap.set('n', '<leader>on', '<CMD>ObsidianNew<CR>', { desc = '[o]bsidian [n]ew note' })
       vim.keymap.set('n', '<leader>ot', '<CMD>ObsidianTags<CR>', { desc = 'search [o]bsidian [t]ags' })
       vim.keymap.set('n', '<leader>oc', '<CMD>ObsidianCheck<CR>', { desc = 'search [o]bsidian [c]heck' })
+      vim.keymap.set('n', '<leader>oh', '<CMD>ObsidianTOC<CR>', { desc = 'search [o]bsidian [h]eadings' })
       vim.keymap.set('n', 'gf', function()
         if require('obsidian').util.cursor_on_markdown_link() then
           return '<cmd>ObsidianFollowLink<CR>'
