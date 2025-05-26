@@ -32,7 +32,7 @@ return {
         end
       end, { noremap = false, expr = true })
 
-      vim.opt.conceallevel = 2
+      vim.opt.conceallevel = 1
     end,
   },
 }

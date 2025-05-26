@@ -1,7 +1,6 @@
 local M = {}
 
 M.ensure_installed = {
-  'mypy', -- python
   'vulture', -- python
   'cmakelint',
   'cpplint',

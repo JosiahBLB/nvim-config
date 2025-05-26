@@ -25,21 +25,6 @@ vim.opt.ignorecase = true    -- for searching
 vim.opt.smartcase = true     -- case sensitive when capitals used
 vim.opt.cursorline = true    -- highlight current line
 vim.opt.inccommand = "split" -- live substitutions
-vim.api.nvim_create_autocmd("FileType", {
-  pattern = { "markdown" },
-  callback = function()
-    vim.opt_local.wrap = true
-    vim.opt_local.linebreak = true
-    vim.opt_local.list = false
-  end,
-})
--- treesitter's syntax highlighting for tmux files sucks
-vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
-  pattern = { ".tmux.conf", "*.tmux", "tmux.conf" },
-  callback = function()
-    vim.treesitter.language.register("bash", "tmux")  -- force tmux filetype to use bash parser
-  end,
-})
 
 -- Sync clipboard between OS and Neovim.
 --  Schedule the setting after `UiEnter` because it can increase startup-time.
@@ -62,5 +47,23 @@ vim.opt.backup = false
 vim.opt.undodir = os.getenv("HOME") .. "/.config/.vim/undodir"
 vim.opt.undofile = true
 vim.opt.isfname:append("@-@")
+
+-- Specific file type settings
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = { "markdown" },
+  callback = function()
+    vim.opt_local.wrap = true
+    vim.opt_local.linebreak = true
+    vim.opt_local.list = false
+  end,
+})
+
+-- treesitter's syntax highlighting for tmux files sucks
+vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
+  pattern = { ".tmux.conf", "*.tmux", "tmux.conf" },
+  callback = function()
+    vim.treesitter.language.register("bash", "tmux")  -- force tmux filetype to use bash parser
+  end,
+})
 
 -- vim: ts=2 sts=2 sw=2 et

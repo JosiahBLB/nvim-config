@@ -5,7 +5,7 @@ return {
   { -- Fuzzy Finder (files, lsp, etc)
     'nvim-telescope/telescope.nvim',
     event = 'VimEnter',
-    branch = '0.1.x',
+    branch = 'master',
     dependencies = {
       'nvim-lua/plenary.nvim',
       { -- If encountering errors, see telescope-fzf-native README for installation instructions
@@ -42,7 +42,7 @@ return {
           find_files = {
             hidden = true, -- hidden files
             follow = true, -- follow symlinks
-          }
+          },
         },
         extensions = {
           ['ui-select'] = {
@@ -56,11 +56,41 @@ return {
       pcall(require('telescope').load_extension, 'ui-select')
       pcall(require('telescope').load_extension, 'live_grep_args')
 
+      -- Find files with <C-h> toggle hidden
+      -- https://github.com/nvim-telescope/telescope.nvim/issues/2874#issuecomment-1900967890
+      local my_find_files
+      my_find_files = function(opts, no_ignore)
+        opts = opts or {}
+        no_ignore = vim.F.if_nil(no_ignore, false)
+        opts.attach_mappings = function(_, map)
+          map({ 'n', 'i' }, '<C-h>', function(prompt_bufnr) -- <C-h> to toggle modes
+            local prompt = require('telescope.actions.state').get_current_line()
+            require('telescope.actions').close(prompt_bufnr)
+            no_ignore = not no_ignore
+            my_find_files({ default_text = prompt }, no_ignore)
+          end)
+          return true
+        end
+
+        if no_ignore then
+          opts.no_ignore = true
+          opts.hidden = true
+          opts.prompt_title = 'Find Files <ALL>'
+          require('telescope.builtin').find_files(opts)
+        else
+          opts.no_ignore = false
+          opts.hidden = false
+          opts.prompt_title = 'Find Files'
+          require('telescope.builtin').find_files(opts)
+        end
+      end
+
       -- See `:help telescope.builtin`
       local builtin = require 'telescope.builtin'
       vim.keymap.set('n', '<leader>sH', builtin.help_tags, { desc = '[s]earch [H]elp' })
       vim.keymap.set('n', '<leader>sk', builtin.keymaps, { desc = '[s]earch [k]eymaps' })
-      vim.keymap.set('n', '<leader>sf', builtin.find_files, { desc = '[s]earch [f]iles' })
+
+      vim.keymap.set('n', '<leader>sf', my_find_files, { desc = '[s]earch [f]iles' })
       vim.keymap.set('n', '<leader>sj', builtin.jumplist, { desc = '[s]earch [j]umplist' })
       vim.keymap.set('n', '<leader>ss', builtin.lsp_document_symbols, { desc = '[s]earch document [s]ymbols' })
       vim.keymap.set('n', '<leader>SS', builtin.builtin, { desc = '[s]earch [s]elect Telescope' })

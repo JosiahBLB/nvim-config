@@ -32,7 +32,8 @@ require('lazy').setup({
   require('plugins/debug').init(), -- debugging!
   require 'plugins/which-key', -- display key mappings
   require 'plugins/obsidian', -- obsidian integration
-  require 'plugins/resession', -- nvim sessionizer
+  require 'plugins/undotree',
+  -- require 'plugins/resession', -- nvim sessionizer
   require 'plugins/ufo', -- folds
 
   -- For additional information with loading, sourcing and examples see `:help lazy.nvim-🔌-plugin-spec`

@@ -15,8 +15,12 @@ end, { desc = '[R]eload Neovim config' })
 vim.keymap.set('n', '<leader>gg', '<cmd>!echo goodbye<cr>', { desc = '[R]eload Neovim config' })
 
 -- Diagnostic keymaps
-vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous [D]iagnostic message' })
-vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next [D]iagnostic message' })
+vim.keymap.set('n', '[d', function()
+  vim.diagnostic.jump { count = 1, float = true }
+end, { desc = 'Go to previous [D]iagnostic message' })
+vim.keymap.set('n', ']d', function()
+  vim.diagnostic.jump { count = -1, float = true }
+end, { desc = 'Go to next [D]iagnostic message' })
 vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Show diagnostic [E]rror messages' })
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
 -- visual mode selection movement
@@ -45,14 +49,26 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   end,
 })
 
+local function enable_diagnostics(enabled)
+  vim.diagnostic.config {
+    virtual_text = enabled,
+    signs = true, -- Keep gutter signs visible
+    underline = enabled,
+  }
+end
+
 -- Toggle inline diagnostics
 vim.g.inline_diagnostics_enabled = true
 function ToggleInlineDiagnostics()
   vim.g.inline_diagnostics_enabled = not vim.g.inline_diagnostics_enabled
-  vim.diagnostic.config {
-    virtual_text = vim.g.inline_diagnostics_enabled, -- Toggle inline warnings/errors
-    signs = true, -- Keep gutter signs visible
-    underline = vim.g.inline_diagnostics_enabled, -- Toggle underlining
-  }
+  enable_diagnostics(vim.g.inline_diagnostics_enabled)
 end
+
+-- Ensure they're enabled on attach
+vim.api.nvim_create_autocmd('LspAttach', {
+  callback = function()
+    enable_diagnostics(true)
+  end,
+})
+
 vim.keymap.set('n', '<leader>tw', ToggleInlineDiagnostics, { noremap = true, silent = true })

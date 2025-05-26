@@ -22,6 +22,7 @@ return {
       { 'williamboman/mason.nvim', opts = {} },
       'williamboman/mason-lspconfig.nvim',
       'WhoIsSethDaniel/mason-tool-installer.nvim',
+      { 'p00f/clangd_extensions.nvim', opts = {} },
 
       -- Useful status updates for LSP.
       { 'j-hui/fidget.nvim', opts = {} },
@@ -36,24 +37,31 @@ return {
       vim.api.nvim_create_autocmd('LspAttach', {
         group = vim.api.nvim_create_augroup('kickstart-lsp-attach', { clear = true }),
         callback = function(event)
-          -- In this case, we create a function that lets us more easily define mappings specific
-          -- for LSP related items. It sets the mode, buffer and description for us each time.
+          -- Helper function to simplify defining LSP keymaps
           local map = function(keys, func, desc, mode)
-            mode = mode or 'n'
-            vim.keymap.set(mode, keys, func, { buffer = event.buf, desc = 'LSP: ' .. desc })
+            local opts = { buffer = event.buf, desc = 'LSP: ' .. desc }
+            vim.keymap.set(mode or 'n', keys, func, opts)
           end
+
+          -- Normal mode mappings
           map('gd', require('telescope.builtin').lsp_definitions, '[G]oto [D]efinition')
           map('gr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
           map('gI', require('telescope.builtin').lsp_implementations, '[G]oto [I]mplementation')
           map('<leader>D', require('telescope.builtin').lsp_type_definitions, 'Type [D]efinition')
-          --  Symbols are things like variables, functions, types, etc.
           map('<leader>ds', require('telescope.builtin').lsp_document_symbols, '[D]ocument [S]ymbols')
           map('<leader>ws', require('telescope.builtin').lsp_dynamic_workspace_symbols, '[W]orkspace [S]ymbols')
           map('<leader>rn', vim.lsp.buf.rename, '[R]e[n]ame')
-          map('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction', { 'n', 'x' })
-          --  For example, in C this would take you to the header.
           map('gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
-          map('gh', ':ClangdSwitchSourceHeader<CR>', '[G]oto [H]eader (or source)')
+          map('gh', '<Cmd>ClangdSwitchSourceHeader<CR>', '[G]oto [H]eader (or source)')
+          map('<leader>ast', '<Cmd>ClangdAST<CR>', 'Clangd [A]bstract [T]ype [H]ierarchy')
+          map('<leader>cth', '<Cmd>ClangdTypeHierarchy<CR>', '[C]langd [T]ype [H]ierarchy')
+          map('<leader>cm', '<Cmd>ClangdMemoryUsage<CR>', '[C]langd [M]emory usage')
+
+          -- Normal + Visual mode mapping
+          vim.keymap.set({ 'n', 'x' }, '<leader>ca', vim.lsp.buf.code_action, {
+            buffer = event.buf,
+            desc = 'LSP: [C]ode [A]ction',
+          })
 
           -- highlight references of the word under your cursor
           local client = vim.lsp.get_client_by_id(event.data.client_id)
@@ -108,6 +116,7 @@ return {
         bashls = {},
         clangd = {},
         ruff = {},
+        pylsp = {},
         cmake = {
           filetypes = { 'cmake', 'CMakeLists.txt' },
         },
