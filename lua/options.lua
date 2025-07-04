@@ -55,6 +55,7 @@ vim.api.nvim_create_autocmd("FileType", {
     vim.opt_local.wrap = true
     vim.opt_local.linebreak = true
     vim.opt_local.list = false
+    vim.opt.conceallevel = 0
   end,
 })
 
@@ -65,5 +66,15 @@ vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
     vim.treesitter.language.register("bash", "tmux")  -- force tmux filetype to use bash parser
   end,
 })
+
+-- Set the path to java
+local java_path = vim.fn.trim(vim.fn.system("which java"))
+if java_path ~= "" and vim.fn.executable(java_path) == 1 then
+  local java_bin = vim.fn.fnamemodify(java_path, ":h")
+  local java_home = vim.fn.fnamemodify(java_bin, ":h")
+
+  vim.env.JAVA_HOME = java_home
+  vim.env.PATH = java_bin .. ":" .. vim.env.PATH
+end
 
 -- vim: ts=2 sts=2 sw=2 et

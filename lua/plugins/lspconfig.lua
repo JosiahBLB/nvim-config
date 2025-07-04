@@ -138,8 +138,9 @@ return {
         },
         zls = {},
         pyright = {},
-        lemminx = {}, -- docker
+        lemminx = {}, -- xml
         gopls = {},
+        html = {},
       }
 
       -- Ensure the servers and tools above are installed

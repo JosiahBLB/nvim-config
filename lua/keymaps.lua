@@ -12,7 +12,6 @@ vim.keymap.set({ 'n', 'v', 'i' }, '<C-s>', '<cmd>w<CR>', { desc = 'Save file' })
 vim.keymap.set('n', '<leader>R', function()
   vim.cmd.source '$XDG_CONFIG_HOME/nvim/init.lua'
 end, { desc = '[R]eload Neovim config' })
-vim.keymap.set('n', '<leader>gg', '<cmd>!echo goodbye<cr>', { desc = '[R]eload Neovim config' })
 
 -- Diagnostic keymaps
 vim.keymap.set('n', '[d', function()
