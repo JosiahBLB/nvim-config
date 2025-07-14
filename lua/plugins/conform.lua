@@ -31,7 +31,7 @@ M.init = function()
           cpp = { 'clang-format' },
           c = { 'clang-format' },
           cmake = { 'cmake_format' },
-          python = { 'ruff_fix', 'ruff_format', 'ruff_organize_imports' },
+          python = { 'ruff_fix', 'ruff_format', 'ruff_organize_imports', 'docformatter' },
           markdown = { 'prettier', 'markdownlint', stop_after_first = true },
           bash = { 'shfmt' },
           sh = { 'shfmt' },
@@ -43,6 +43,21 @@ M.init = function()
           --
           -- You can use 'stop_after_first' to run the first available formatter from the list
           -- javascript = { "prettierd", "prettier", stop_after_first = true },
+        },
+        formatters = {
+          docformatter = {
+            command = 'docformatter',
+            args = {
+              '--in-place',
+              '--blank',
+              '--wrap-summaries',
+              '120',
+              '--wrap-descriptions',
+              '120',
+              '$FILENAME',
+            },
+            stdin = false,
+          },
         },
       },
     },

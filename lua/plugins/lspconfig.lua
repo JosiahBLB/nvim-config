@@ -116,7 +116,7 @@ return {
         bashls = {},
         clangd = {},
         ruff = {},
-        pylsp = {},
+        -- pylsp = {},
         cmake = {
           filetypes = { 'cmake', 'CMakeLists.txt' },
         },
