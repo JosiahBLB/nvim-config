@@ -13,6 +13,7 @@ require('lazy').setup({
   'mg979/vim-visual-multi', -- ctrl+n for multi-cursors
   { 'numToStr/Comment.nvim', opts = {} }, -- default nvim uses /* */ rather than //
   require 'plugins/neogen', -- doxgen generation
+  require 'plugins/neoscroll', -- smooth scroll
   require 'plugins/nvim-colorizer', -- color hex values
   require('plugins/lint').init(), -- static analysis
   require 'plugins/transparent', -- adds window transparency
@@ -33,8 +34,9 @@ require('lazy').setup({
   require 'plugins/which-key', -- display key mappings
   require 'plugins/obsidian', -- obsidian integration
   require 'plugins/undotree',
+  require('plugins/trouble').init(), -- diagnostics
   -- require 'plugins/resession', -- nvim sessionizer
-  require 'plugins/ufo', -- folds
+  require ('plugins/ufo').init(), -- folds
 
   -- For additional information with loading, sourcing and examples see `:help lazy.nvim-🔌-plugin-spec`
   -- Or use `<space>sh` then write `lazy.nvim-plugin`

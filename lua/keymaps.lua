@@ -3,8 +3,6 @@
 
 -- Keymaps for better default experience
 vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
-vim.keymap.set('n', '<C-d>', '<C-d>zz', { desc = 'Screen centred half page jump down' })
-vim.keymap.set('n', '<C-u>', '<C-u>zz', { desc = 'Screen centred half page jump up' })
 vim.keymap.set('n', 'n', 'nzzzv', { desc = 'Screen centred jump to previous search term' })
 vim.keymap.set('n', 'N', 'Nzzzv', { desc = 'Screen centred jump to next search term' })
 vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
@@ -20,8 +18,6 @@ end, { desc = 'Go to previous [D]iagnostic message' })
 vim.keymap.set('n', ']d', function()
   vim.diagnostic.jump { count = -1, float = true }
 end, { desc = 'Go to next [D]iagnostic message' })
-vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Show diagnostic [E]rror messages' })
-vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
 -- visual mode selection movement
 vim.keymap.set('v', 'J', ":m '>+1<CR>gv=gv", { desc = 'Move selection down' })
 vim.keymap.set('v', 'K', ":m '<-2<CR>gv=gv", { desc = 'Move selection up' })
@@ -48,25 +44,48 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   end,
 })
 
+-- Diagnostics on hover
+vim.api.nvim_create_autocmd({ 'CursorHold' }, {
+  pattern = '*',
+  callback = function()
+    for _, winid in pairs(vim.api.nvim_tabpage_list_wins(0)) do
+      if vim.api.nvim_win_get_config(winid).zindex then
+        return
+      end
+    end
+    vim.diagnostic.open_float {
+      scope = 'cursor',
+      focusable = false,
+      close_events = {
+        'CursorMoved',
+        'CursorMovedI',
+        'BufHidden',
+        'InsertCharPre',
+        'WinLeave',
+      },
+    }
+  end,
+})
+
 local function enable_diagnostics(enabled)
   vim.diagnostic.config {
     virtual_text = enabled,
     signs = true, -- Keep gutter signs visible
-    underline = enabled,
+    underline = true,
   }
 end
 
 -- Toggle inline diagnostics
-vim.g.inline_diagnostics_enabled = true
+vim.g.inline_diagnostics_enabled = false
 function ToggleInlineDiagnostics()
   vim.g.inline_diagnostics_enabled = not vim.g.inline_diagnostics_enabled
   enable_diagnostics(vim.g.inline_diagnostics_enabled)
 end
 
--- Ensure they're enabled on attach
+-- Ensure they're disabled on attach
 vim.api.nvim_create_autocmd('LspAttach', {
   callback = function()
-    enable_diagnostics(true)
+    enable_diagnostics(false)
   end,
 })
 

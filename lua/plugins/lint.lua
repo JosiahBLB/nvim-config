@@ -17,6 +17,7 @@ M.init = function()
       event = { 'BufReadPre', 'BufNewFile' },
       config = function()
         local lint = require 'lint'
+        lint.linters.shellcheck.args = { '-x' }
         lint.linters_by_ft = {
           markdown = { 'markdownlint' },
           dockerfile = { 'hadolint' },
@@ -27,6 +28,7 @@ M.init = function()
           python = { 'ruff', 'mypy', 'vulture' },
           sh = { 'shellcheck' },
           bash = { 'shellcheck' },
+          zsh = { 'shellcheck' },
         }
 
         -- Create autocommand which carries out the actual linting
@@ -47,6 +49,5 @@ M.init = function()
     },
   }
 end
-
 
 return M

@@ -113,7 +113,9 @@ return {
       -- Enable the following language servers
       local servers = {
         -- `:help lspconfig-all` for a list of all the pre-configured LSPs
-        bashls = {},
+        bashls = {
+          filetypes = { 'sh', 'zsh' },
+        },
         clangd = {},
         ruff = {},
         -- pylsp = {},

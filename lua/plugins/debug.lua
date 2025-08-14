@@ -208,6 +208,10 @@ M.init = function()
             cwd = '${workspaceFolder}',
             stopOnEntry = false,
             args = {},
+            initCommands = {
+              'settings set target.process.thread.step-avoid-libraries true',
+              'settings set target.skip-prologue true',
+            },
           },
           {
             name = 'Remote debug',
