@@ -184,7 +184,8 @@ return {
       }
 
       -- Manual entries for those which are not handled by mason
-      require('lspconfig').dartls.setup {}
+      vim.lsp.enable('dartls')
+      vim.lsp.enable('ocamells')
     end,
   },
 }

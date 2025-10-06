@@ -38,6 +38,8 @@ M.init = function()
           go = { 'gofmt' }, -- via go
           xml = { 'xmlformatter', 'prettier' },
           html = { 'prettier' },
+          ocaml = { 'ocamlformat' },
+
           -- Conform can also run multiple formatters sequentially
           -- python = { "isort", "black" },
           --
