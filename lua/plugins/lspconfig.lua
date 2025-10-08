@@ -145,6 +145,8 @@ return {
         html = {},
         awk_ls = {},
         yamlls = {},
+        ts_ls = {},
+        denols = {},
       }
 
       -- Ensure the servers and tools above are installed
