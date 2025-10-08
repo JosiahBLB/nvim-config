@@ -39,6 +39,7 @@ M.init = function()
           xml = { 'xmlformatter', 'prettier' },
           html = { 'prettier' },
           ocaml = { 'ocamlformat' },
+          yaml = { 'prettier' },
 
           -- Conform can also run multiple formatters sequentially
           -- python = { "isort", "black" },

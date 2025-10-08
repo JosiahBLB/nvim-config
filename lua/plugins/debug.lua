@@ -158,6 +158,38 @@ M.init = function()
           name = 'bashdb',
         }
 
+        dap.adapters.dart = {
+          type = 'executable',
+          command = 'dart',
+          args = { 'debug_adapter' },
+        }
+
+        dap.adapters.flutter = {
+          type = 'executable',
+          command = 'flutter',
+          args = { 'debug-adapter' },
+        }
+
+        dap.configurations.dart = {
+          {
+            type = 'dart',
+            request = 'launch',
+            name = 'Launch Dart Program',
+            program = '${file}',
+            cwd = '${workspaceFolder}',
+          },
+        }
+
+        dap.configurations.flutter = {
+          {
+            type = 'flutter',
+            request = 'launch',
+            name = 'Launch Flutter App',
+            program = '${workspaceFolder}/lib/main.dart',
+            cwd = '${workspaceFolder}',
+          },
+        }
+
         dap.configurations.sh = {
           {
             type = 'bashdb',

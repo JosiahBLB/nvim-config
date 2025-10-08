@@ -8,6 +8,7 @@ M.ensure_installed = {
   'jsonlint',
   'shellcheck',
   'markdownlint',
+  'yamllint'
 }
 
 M.init = function()
@@ -29,6 +30,7 @@ M.init = function()
           sh = { 'shellcheck' },
           bash = { 'shellcheck' },
           zsh = { 'shellcheck' },
+          yaml = { 'yamllint' },
         }
 
         -- Create autocommand which carries out the actual linting

@@ -143,6 +143,8 @@ return {
         lemminx = {}, -- xml
         gopls = {},
         html = {},
+        awk_ls = {},
+        yamlls = {},
       }
 
       -- Ensure the servers and tools above are installed
@@ -176,9 +178,8 @@ return {
         handlers = {
           function(server_name)
             local server = servers[server_name] or {}
-            -- This handles overriding only values explicitly passed by the server configuration above
             server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
-            require('lspconfig')[server_name].setup(server)
+            vim.lsp.config(server_name, server)
           end,
         },
       }
@@ -186,6 +187,16 @@ return {
       -- Manual entries for those which are not handled by mason
       vim.lsp.enable('dartls')
       vim.lsp.enable('ocamells')
+      vim.lsp.config('dartls', {
+        flags = {
+          allow_incremental_sync = false,
+        },
+        settings = {
+          dart = {
+            lineLength = 120,
+          },
+        },
+      })
     end,
   },
 }
