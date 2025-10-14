@@ -77,4 +77,7 @@ if java_path ~= "" and vim.fn.executable(java_path) == 1 then
   vim.env.PATH = java_bin .. ":" .. vim.env.PATH
 end
 
+-- ocaml indentation
+vim.opt.rtp:prepend("/home/jbrough/.opam/default/share/ocp-indent/vim")
+
 -- vim: ts=2 sts=2 sw=2 et
