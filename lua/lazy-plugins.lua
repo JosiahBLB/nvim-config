@@ -35,8 +35,7 @@ require('lazy').setup({
   require 'plugins/obsidian', -- obsidian integration
   require 'plugins/undotree',
   require('plugins/trouble').init(), -- diagnostics
-  -- require 'plugins/resession', -- nvim sessionizer
-  require ('plugins/ufo').init(), -- folds
+  require('plugins/ufo').init(), -- folds
 
   -- For additional information with loading, sourcing and examples see `:help lazy.nvim-🔌-plugin-spec`
   -- Or use `<space>sh` then write `lazy.nvim-plugin`
