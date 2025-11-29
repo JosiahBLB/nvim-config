@@ -147,6 +147,7 @@ return {
         yamlls = {},
         ts_ls = {},
         denols = {},
+        taplo = {}, -- toml
       }
 
       -- Ensure the servers and tools above are installed
@@ -187,8 +188,8 @@ return {
       }
 
       -- Manual entries for those which are not handled by mason
-      vim.lsp.enable('dartls')
-      vim.lsp.enable('ocamells')
+      vim.lsp.enable 'dartls'
+      vim.lsp.enable 'ocamells'
       vim.lsp.config('dartls', {
         flags = {
           allow_incremental_sync = false,
