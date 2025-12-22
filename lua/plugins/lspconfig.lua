@@ -116,7 +116,17 @@ return {
         bashls = {
           filetypes = { 'sh', 'zsh' },
         },
-        clangd = {},
+        clangd = {
+          filetypes = { 'c', 'cpp', 'tpp', 'objc', 'objcpp', 'cuda', 'proto', 'h', 'hpp' },
+          cmd = {
+            'clangd',
+            '--background-index', -- Essential: indexes your whole project
+            '--clang-tidy', -- Keeps your tidy flags working
+            '--header-insertion=iwyu', -- Adds #include automatically
+            '--completion-style=detailed',
+            '--function-arg-placeholders',
+          },
+        },
         ruff = {},
         -- pylsp = {},
         cmake = {
