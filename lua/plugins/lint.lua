@@ -1,16 +1,5 @@
 local M = {}
 
-M.ensure_installed = {
-  'vulture', -- python
-  'cmakelint',
-  'cpplint',
-  'hadolint', -- docker
-  'jsonlint',
-  'shellcheck',
-  'markdownlint',
-  'yamllint'
-}
-
 M.init = function()
   return {
     { -- Linting

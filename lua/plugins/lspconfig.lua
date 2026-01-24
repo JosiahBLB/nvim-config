@@ -16,12 +16,6 @@ return {
     -- Main LSP Configuration
     'neovim/nvim-lspconfig',
     dependencies = {
-      -- Automatically install LSPs and related tools to stdpath for Neovim
-      -- Mason must be loaded before its dependents so we need to set it up here.
-      -- NOTE: `opts = {}` is the same as calling `require('mason').setup({})`
-      { 'williamboman/mason.nvim', opts = {} },
-      'williamboman/mason-lspconfig.nvim',
-      'WhoIsSethDaniel/mason-tool-installer.nvim',
       { 'p00f/clangd_extensions.nvim', opts = {} },
 
       -- Useful status updates for LSP.
@@ -113,96 +107,102 @@ return {
       -- Enable the following language servers
       local servers = {
         -- `:help lspconfig-all` for a list of all the pre-configured LSPs
-        bashls = {
-          filetypes = { 'sh', 'zsh' },
+        lua_ls = {
+          on_init = function(client)
+            if client.workspace_folders then
+              local path = client.workspace_folders[1].name
+              if path ~= vim.fn.stdpath 'config' and (vim.uv.fs_stat(path .. '/.luarc.json') or vim.uv.fs_stat(path .. '/.luarc.jsonc')) then
+                return
+              end
+            end
+
+            client.config.settings.Lua = vim.tbl_deep_extend('force', client.config.settings.Lua, {
+              runtime = {
+                -- Tell the language server which version of Lua you're using (most
+                -- likely LuaJIT in the case of Neovim)
+                version = 'LuaJIT',
+                -- Tell the language server how to find Lua modules same way as Neovim
+                -- (see `:h lua-module-load`)
+                path = {
+                  'lua/?.lua',
+                  'lua/?/init.lua',
+                },
+              },
+              -- Make the server aware of Neovim runtime files
+              workspace = {
+                checkThirdParty = false,
+                library = {
+                  vim.env.VIMRUNTIME,
+                  -- Depending on the usage, you might want to add additional paths
+                  -- here.
+                  -- '${3rd}/luv/library',
+                  -- '${3rd}/busted/library',
+                },
+                -- Or pull in all of 'runtimepath'.
+                -- NOTE: this is a lot slower and will cause issues when working on
+                -- your own configuration.
+                -- See https://github.com/neovim/nvim-lspconfig/issues/3189
+                -- library = vim.api.nvim_get_runtime_file('', true),
+              },
+            })
+          end,
+          settings = {
+            Lua = {},
+          },
         },
+
+        -- Functional
+        nixd = {},
+        ocamells = {},
+
+        -- Web Dev
+        gopls = {},
+        ts_ls = {},
+        html = {},
+        denols = {},
+        cssls = {},
+
+        -- C++
         clangd = {},
-        -- ruff = {},
-        -- pylsp = {},
         cmake = {
           filetypes = { 'cmake', 'CMakeLists.txt' },
         },
-        lua_ls = {
-          -- cmd = { ... },
-          -- filetypes = { ... },
-          -- capabilities = {},
+
+        -- Zig
+        zls = {},
+
+        -- Python
+        ruff = {},
+        ty = {},
+
+        -- Mobile App Dev
+        dartls = {
+          flags = {
+            allow_incremental_sync = false,
+          },
           settings = {
-            Lua = {
-              completion = {
-                callSnippet = 'Replace',
-              },
-              diagnostics = {
-                disable = { 'missing-fields' }, -- disable noisy warnings
-                globals = { 'vim' },
-              },
+            dart = {
+              lineLength = 120,
             },
           },
         },
-        zls = {},
-        lemminx = {}, -- xml
-        gopls = {},
-        html = {},
+
+        -- Scripting
         awk_ls = {},
-        yamlls = {},
-        ts_ls = {},
-        denols = {},
+        bashls = {
+          filetypes = { 'sh', 'zsh' },
+        },
+
+        -- Configuration files
         jsonls = {},
-        cssls = {},
+        lemminx = {}, -- xml
+        yamlls = {},
       }
 
-      -- Ensure the servers and tools above are installed
-      --
-      -- To check the current status of installed tools and/or manually install
-      -- other tools, you can run
-      --    :Mason
-      local ensure_installed = vim.tbl_keys(servers or {})
-      vim.list_extend(ensure_installed, require('plugins.lint').ensure_installed)
-      vim.list_extend(ensure_installed, require('plugins.conform').ensure_installed)
-      vim.list_extend(ensure_installed, require('plugins.debug').ensure_installed)
-      vim.list_extend(ensure_installed, {
-        'bash-language-server', -- bashls
-        -- 'cmake-language-server', -- cmake
-        'lua-language-server', -- lua_ls
-      })
-
-      -- deduplicate the list
-      local set = {}
-      for _, v in ipairs(ensure_installed) do
-        set[v] = true
+      for server, config in pairs(servers) do
+        vim.lsp.enable(server)
+        vim.lsp.config(server, config)
       end
-      ensure_installed = {}
-      for k in pairs(set) do
-        table.insert(ensure_installed, k)
-      end
-
-      require('mason-tool-installer').setup { ensure_installed = ensure_installed }
-
-      require('mason-lspconfig').setup {
-        handlers = {
-          function(server_name)
-            local server = servers[server_name] or {}
-            server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
-            vim.lsp.config(server_name, server)
-          end,
-        },
-      }
-
-      -- Manual entries for those which are not handled by mason
-      vim.lsp.enable('nixd')
-      vim.lsp.enable('dartls')
-      vim.lsp.enable('ocamells')
-      vim.lsp.enable('ruff')
-      vim.lsp.enable('ty')
-      vim.lsp.config('dartls', {
-        flags = {
-          allow_incremental_sync = false,
-        },
-        settings = {
-          dart = {
-            lineLength = 120,
-          },
-        },
-      })
     end,
   },
 }

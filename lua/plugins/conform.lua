@@ -1,14 +1,5 @@
 local M = {}
 
-M.ensure_installed = {
-  'clang-format', -- c/c++
-  'stylua', -- lua
-  'shfmt',
-  'prettier',
-  'markdownlint',
-  'alejandra'
-}
-
 M.init = function()
   return {
     { -- Autoformat
