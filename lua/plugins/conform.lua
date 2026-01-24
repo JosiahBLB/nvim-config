@@ -6,6 +6,7 @@ M.ensure_installed = {
   'shfmt',
   'prettier',
   'markdownlint',
+  'alejandra'
 }
 
 M.init = function()
@@ -40,6 +41,10 @@ M.init = function()
           html = { 'prettier' },
           ocaml = { 'ocamlformat' },
           yaml = { 'prettier' },
+          nix = { 'alejandra' },
+          css = { 'prettier' },
+          json = { 'prettier' },
+          jsonc = { 'prettier' },
 
           -- Conform can also run multiple formatters sequentially
           -- python = { "isort", "black" },

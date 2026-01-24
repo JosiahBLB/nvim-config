@@ -48,6 +48,9 @@ vim.opt.undodir = os.getenv("HOME") .. "/.config/.vim/undodir"
 vim.opt.undofile = true
 vim.opt.isfname:append("@-@")
 
+-- Ensure site directory is in runtimepath
+vim.opt.rtp:append(vim.fn.stdpath("data") .. "/site")
+
 -- Specific file type settings
 vim.api.nvim_create_autocmd("FileType", {
   pattern = { "markdown" },
@@ -59,11 +62,11 @@ vim.api.nvim_create_autocmd("FileType", {
   end,
 })
 
--- treesitter's syntax highlighting for tmux files sucks
 vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
   pattern = { ".tmux.conf", "*.tmux", "tmux.conf" },
   callback = function()
-    vim.treesitter.language.register("bash", "tmux")  -- force tmux filetype to use bash parser
+    -- Set filetype to tmux
+    vim.bo.filetype = "tmux"
   end,
 })
 

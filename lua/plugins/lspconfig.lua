@@ -117,7 +117,7 @@ return {
           filetypes = { 'sh', 'zsh' },
         },
         clangd = {},
-        ruff = {},
+        -- ruff = {},
         -- pylsp = {},
         cmake = {
           filetypes = { 'cmake', 'CMakeLists.txt' },
@@ -139,7 +139,6 @@ return {
           },
         },
         zls = {},
-        pyright = {},
         lemminx = {}, -- xml
         gopls = {},
         html = {},
@@ -147,6 +146,8 @@ return {
         yamlls = {},
         ts_ls = {},
         denols = {},
+        jsonls = {},
+        cssls = {},
       }
 
       -- Ensure the servers and tools above are installed
@@ -160,7 +161,7 @@ return {
       vim.list_extend(ensure_installed, require('plugins.debug').ensure_installed)
       vim.list_extend(ensure_installed, {
         'bash-language-server', -- bashls
-        'cmake-language-server', -- cmake
+        -- 'cmake-language-server', -- cmake
         'lua-language-server', -- lua_ls
       })
 
@@ -187,8 +188,11 @@ return {
       }
 
       -- Manual entries for those which are not handled by mason
+      vim.lsp.enable('nixd')
       vim.lsp.enable('dartls')
       vim.lsp.enable('ocamells')
+      vim.lsp.enable('ruff')
+      vim.lsp.enable('ty')
       vim.lsp.config('dartls', {
         flags = {
           allow_incremental_sync = false,

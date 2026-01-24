@@ -26,13 +26,13 @@ require('lazy').setup({
   require 'plugins/todo-comments', -- coloured        TODO:
   require 'plugins/mini', -- grouped smaller plugins
   require 'plugins/treesitter', -- Highlight, edit, and navigate code
-  require 'plugins/tmux', -- ctrl+<hjkl> to move between tmux panes
+  require 'plugins/vim-tmux-navigator', -- ctrl+<hjkl> to move between tmux panes
   require 'plugins/neo-tree', -- file navigator
   require 'plugins/indent-line', -- indentation guides
   require 'plugins/autopairs', -- match brackets
   require('plugins/debug').init(), -- debugging!
   require 'plugins/which-key', -- display key mappings
-  require 'plugins/obsidian', -- obsidian integration
+  -- require 'plugins/obsidian', -- obsidian integration
   require 'plugins/undotree',
   require('plugins/trouble').init(), -- diagnostics
   -- require 'plugins/resession', -- nvim sessionizer
