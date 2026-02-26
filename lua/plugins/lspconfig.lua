@@ -153,7 +153,7 @@ return {
 
         -- Functional
         nixd = {},
-        ocamells = {},
+        ocamllsp = {},
 
         -- Web Dev
         gopls = {},
