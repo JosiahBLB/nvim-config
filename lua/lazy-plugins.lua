@@ -9,34 +9,34 @@
 -- Use `opts = {}` to force a plugin to be loaded.
 --
 require('lazy').setup({
-  'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
   'mg979/vim-visual-multi', -- ctrl+n for multi-cursors
   { 'numToStr/Comment.nvim', opts = {} }, -- default nvim uses /* */ rather than //
+  require 'plugins/autopairs', -- match brackets
+  require 'plugins/cmp', -- completion sources
+  require('plugins/conform').init(), -- Auto formatting
+  require('plugins/debug').init(), -- debugging!
+  require 'plugins/git', -- Git functionality
+  require 'plugins/indent-line', -- indentation guides
+  require('plugins/lint').init(), -- static analysis
+  require 'plugins/lspconfig', -- Language server protocl config
+  require 'plugins/mini', -- grouped smaller plugins
   require 'plugins/neogen', -- doxgen generation
   require 'plugins/neoscroll', -- smooth scroll
+  require 'plugins/neo-tree', -- file navigator
   require 'plugins/nvim-colorizer', -- color hex values
-  require('plugins/lint').init(), -- static analysis
-  require 'plugins/transparent', -- adds window transparency
-  require 'plugins/git', -- Git functionality
+  -- require 'plugins/obsidian', -- obsidian integration
+  -- require 'plugins/resession', -- nvim sessionizer
   require 'plugins/telescope', -- Fuzzy finding
-  require 'plugins/lspconfig', -- Language server protocl config
-  require('plugins/conform').init(), -- Auto formatting
-  require 'plugins/cmp', -- completion sources
   require 'plugins/theme', -- editor colour scheme
   require 'plugins/todo-comments', -- coloured        TODO:
-  require 'plugins/mini', -- grouped smaller plugins
+  require 'plugins/transparent', -- adds window transparency
   require 'plugins/treesitter', -- Highlight, edit, and navigate code
-  require 'plugins/vim-tmux-navigator', -- ctrl+<hjkl> to move between tmux panes
-  require 'plugins/neo-tree', -- file navigator
-  require 'plugins/indent-line', -- indentation guides
-  require 'plugins/autopairs', -- match brackets
-  require('plugins/debug').init(), -- debugging!
-  require 'plugins/which-key', -- display key mappings
-  -- require 'plugins/obsidian', -- obsidian integration
-  require 'plugins/undotree',
   require('plugins/trouble').init(), -- diagnostics
-  -- require 'plugins/resession', -- nvim sessionizer
   require ('plugins/ufo').init(), -- folds
+  require 'plugins/undotree',
+  require 'plugins/vim-tmux-navigator', -- ctrl+<hjkl> to move between tmux panes
+  require 'plugins/which-key', -- display key mappings
+  'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
 
   -- For additional information with loading, sourcing and examples see `:help lazy.nvim-🔌-plugin-spec`
   -- Or use `<space>sh` then write `lazy.nvim-plugin`

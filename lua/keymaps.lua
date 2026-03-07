@@ -18,9 +18,6 @@ end, { desc = 'Go to previous [D]iagnostic message' })
 vim.keymap.set('n', ']d', function()
   vim.diagnostic.jump { count = -1, float = true }
 end, { desc = 'Go to next [D]iagnostic message' })
--- visual mode selection movement
-vim.keymap.set('v', 'J', ":m '>+1<CR>gv=gv", { desc = 'Move selection down' })
-vim.keymap.set('v', 'K', ":m '<-2<CR>gv=gv", { desc = 'Move selection up' })
 -- pasting: set leader pasting to go to zero register
 vim.keymap.set('x', '<leader>p', [["_d"0P]], { desc = 'Paste and replace selection from zero register' })
 vim.keymap.set('n', '<leader>p', [["0p]], { desc = 'Paste from zero register' })
