@@ -1,6 +1,7 @@
 -- [[ Show Help in Picker ]]
 --  - Insert mode: <c-/>
 --  - Normal mode: ?
+--
 return {
   { -- Fuzzy Finder (files, lsp, etc)
     'nvim-telescope/telescope.nvim',
@@ -30,6 +31,7 @@ return {
     config = function()
       -- [[ Configure Telescope ]]
       -- See `:help telescope` and `:help telescope.setup()`
+
       require('telescope').setup {
         -- See: `:help telescope.setup()`
         --
@@ -48,6 +50,25 @@ return {
           ['ui-select'] = {
             require('telescope.themes').get_dropdown(),
           },
+
+          live_grep_args = {
+            auto_quoting = true, -- enable/disable auto-quoting
+            -- define mappings, e.g.
+            mappings = { -- extend mappings
+              i = {
+                ['<C-q>'] = require('telescope-live-grep-args.actions').quote_prompt(),
+                ['<C-i>'] = require('telescope-live-grep-args.actions').quote_prompt { postfix = ' --iglob ' },
+                ['<C-I>'] = require('telescope-live-grep-args.actions').quote_prompt { postfix = '--hidden --iglob ' },
+                ['<C-a>'] = require('telescope-live-grep-args.actions').quote_prompt { postfix = ' --hidden ' },
+                -- freeze the current list and start a fuzzy search in the frozen list
+                ['<C-space>'] = require('telescope-live-grep-args.actions').to_fuzzy_refine,
+              },
+            },
+            -- ... also accepts theme settings, for example:
+            -- theme = "dropdown", -- use dropdown theme
+            -- theme = { }, -- use own theme spec
+            -- layout_config = { mirror=true }, -- mirror preview pane
+          },
         },
       }
 
@@ -58,16 +79,16 @@ return {
 
       -- Find files with <C-h> toggle hidden
       -- https://github.com/nvim-telescope/telescope.nvim/issues/2874#issuecomment-1900967890
-      local my_find_files
-      my_find_files = function(opts, no_ignore)
+      local search_files_toggle_hidden
+      search_files_toggle_hidden = function(opts, no_ignore)
         opts = opts or {}
-        no_ignore = vim.F.if_nil(no_ignore, false)
+        no_ignore = vim.F.if_nil(no_ignore, true)
         opts.attach_mappings = function(_, map)
           map({ 'n', 'i' }, '<C-h>', function(prompt_bufnr) -- <C-h> to toggle modes
             local prompt = require('telescope.actions.state').get_current_line()
             require('telescope.actions').close(prompt_bufnr)
             no_ignore = not no_ignore
-            my_find_files({ default_text = prompt }, no_ignore)
+            search_files_toggle_hidden({ default_text = prompt }, no_ignore)
           end)
           return true
         end
@@ -90,7 +111,7 @@ return {
       vim.keymap.set('n', '<leader>sH', builtin.help_tags, { desc = '[s]earch [H]elp' })
       vim.keymap.set('n', '<leader>sk', builtin.keymaps, { desc = '[s]earch [k]eymaps' })
 
-      vim.keymap.set('n', '<leader>sf', my_find_files, { desc = '[s]earch [f]iles' })
+      vim.keymap.set('n', '<leader>sf', search_files_toggle_hidden, { desc = '[s]earch [f]iles' })
       vim.keymap.set('n', '<leader>sj', builtin.jumplist, { desc = '[s]earch [j]umplist' })
       vim.keymap.set('n', '<leader>ss', builtin.lsp_document_symbols, { desc = '[s]earch document [s]ymbols' })
       vim.keymap.set('n', '<leader>SS', builtin.builtin, { desc = '[s]earch [s]elect Telescope' })
