@@ -58,8 +58,8 @@ return {
 
       -- Find files with <C-h> toggle hidden
       -- https://github.com/nvim-telescope/telescope.nvim/issues/2874#issuecomment-1900967890
-      local my_find_files
-      my_find_files = function(opts, no_ignore)
+      local fd_toggle_hidden
+      fd_toggle_hidden = function(opts, no_ignore)
         opts = opts or {}
         no_ignore = vim.F.if_nil(no_ignore, false)
         opts.attach_mappings = function(_, map)
@@ -67,7 +67,7 @@ return {
             local prompt = require('telescope.actions.state').get_current_line()
             require('telescope.actions').close(prompt_bufnr)
             no_ignore = not no_ignore
-            my_find_files({ default_text = prompt }, no_ignore)
+            fd_toggle_hidden({ default_text = prompt }, no_ignore)
           end)
           return true
         end
@@ -90,7 +90,7 @@ return {
       vim.keymap.set('n', '<leader>sh', builtin.help_tags, { desc = '[s]earch [h]elp' })
       vim.keymap.set('n', '<leader>sk', builtin.keymaps, { desc = '[s]earch [k]eymaps' })
 
-      vim.keymap.set('n', '<leader>sf', my_find_files, { desc = '[s]earch [f]iles' })
+      vim.keymap.set('n', '<leader>sf', fd_toggle_hidden, { desc = '[s]earch [f]iles' })
       vim.keymap.set('n', '<leader>sj', builtin.jumplist, { desc = '[s]earch [j]umplist' })
       vim.keymap.set('n', '<leader>ss', builtin.lsp_document_symbols, { desc = '[s]earch document [s]ymbols' })
       vim.keymap.set('n', '<leader>SS', builtin.builtin, { desc = '[s]earch [s]elect Telescope' })
