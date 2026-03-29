@@ -158,6 +158,7 @@ return {
         ts_ls = {},
         denols = {},
         taplo = {}, -- toml
+        ansiblels = {}
       }
 
       -- Ensure the servers and tools above are installed
