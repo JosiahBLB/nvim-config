@@ -25,7 +25,7 @@ require('lazy').setup({
   require 'plugins/theme', -- editor colour scheme
   require 'plugins/todo-comments', -- coloured        TODO:
   require 'plugins/mini', -- grouped smaller plugins
-  require 'plugins/treesitter', -- Highlight, edit, and navigate code
+  require 'plugins/tree-sitter-manager', -- Highlight, edit, and navigate code
   require 'plugins/tmux', -- ctrl+<hjkl> to move between tmux panes
   require 'plugins/neo-tree', -- file navigator
   require 'plugins/indent-line', -- indentation guides
