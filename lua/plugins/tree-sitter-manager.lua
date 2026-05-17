@@ -1,12 +1,13 @@
 return {
-  "romus204/tree-sitter-manager.nvim",
+  'romus204/tree-sitter-manager.nvim',
   dependencies = {}, -- tree-sitter CLI must be installed system-wide
   config = function()
-    require("tree-sitter-manager").setup({
-      ensure_installed = { "bash", "lua", "python", "c", "cpp"},
+    require('tree-sitter-manager').setup {
+      ensure_installed = { 'bash', 'lua', 'python', 'c', 'cpp' },
+      auto_install = true,
       -- Optional: custom paths
       -- parser_dir = vim.fn.stdpath("data") .. "/site/parser",
       -- query_dir = vim.fn.stdpath("data") .. "/site/queries",
-    })
-  end
+    }
+  end,
 }

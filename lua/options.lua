@@ -78,7 +78,7 @@ if java_path ~= '' and vim.fn.executable(java_path) == 1 then
 end
 
 -- ensure treesitter parser install dir is in runtimepath
-vim.opt.rtp:append(vim.fn.stdpath 'data' .. '/site')
+vim.o.rtp = vim.o.rtp .. ',' .. vim.fn.stdpath 'data' .. '/site/'
 
 -- ocaml indentation
 vim.opt.rtp:prepend '/home/jbrough/.opam/default/share/ocp-indent/vim'

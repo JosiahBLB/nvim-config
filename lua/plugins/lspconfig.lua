@@ -158,7 +158,8 @@ return {
         ts_ls = {},
         denols = {},
         taplo = {}, -- toml
-        ansiblels = {}
+        ansiblels = {},
+        mypy = {}
       }
 
       -- Ensure the servers and tools above are installed
