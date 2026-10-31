@@ -36,6 +36,10 @@ require('lazy').setup({
   require 'plugins/undotree',
   require('plugins/trouble').init(), -- diagnostics
   require('plugins/ufo').init(), -- folds
+  require('plugins/mermaid').init(), -- mermaid preview
+  require('plugins/image').init(), -- render images
+  require('plugins/markdown-preview'), -- markdown preview
+  require('plugins/claude').init(), -- claude code integration
 
   -- For additional information with loading, sourcing and examples see `:help lazy.nvim-🔌-plugin-spec`
   -- Or use `<space>sh` then write `lazy.nvim-plugin`
